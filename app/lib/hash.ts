@@ -24,6 +24,7 @@ export async function sha256Hex(data: string | Uint8Array): Promise<string> {
 
   if (HAS_WEBCRYPTO) {
     const webcryptoBuffer = new ArrayBuffer(bytes.byteLength);
+    new Uint8Array(webcryptoBuffer).set(bytes);
     const digest = await globalThis.crypto.subtle.digest(
       "SHA-256",
       webcryptoBuffer,
