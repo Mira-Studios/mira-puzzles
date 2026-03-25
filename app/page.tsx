@@ -24,7 +24,7 @@ export default function Home() {
                 Test your wit with mind-bending puzzles
               </p>
               <div className="cta-row animate-fade-up" style={{ animationDelay: "280ms" }}>
-                <Link href="/1" className="btn btn-primary">
+                <Link href="/puzzle-1" className="btn btn-primary">
                   Begin
                 </Link>
               </div>
