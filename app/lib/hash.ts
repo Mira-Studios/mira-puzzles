@@ -43,6 +43,20 @@ export async function sha256Hex(data: string | Uint8Array): Promise<string> {
   return sha256HexFallback(bytes);
 }
 
+export function mask(hash: string, mask: number): string {
+  let ret: string = "";
+  for (var i = 0; i < hash.length; i += 2) {
+    const num = parseInt(hash.slice(i, i+2), 16);
+    ret += (num ^ mask).toString(16).padStart(2, "0");
+  }
+  return ret;
+}
+
+export async function keyedSha256Hex(data: string | Uint8Array, key: number) {
+  const hex = await sha256Hex(data);
+  return mask(hex, key);
+}
+
 export async function doubleHash(data: string | Uint8Array): Promise<string> {
   return sha256Hex(await sha256Hex(data));
 }
