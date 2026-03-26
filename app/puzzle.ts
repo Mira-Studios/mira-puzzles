@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { sha256Hex, keyedSha256Hex, mask } from "./lib/hash.ts";
 import { parseParams } from "./lib/query.ts";
 
@@ -45,4 +46,39 @@ export async function checkParams(doubleHash: string) {
     const hashParam: string = (typeof parsedParams == "string") ? parsedParams : parsedParams["key"];
 
     return (await keyedHashHash(hashParam)) === doubleHash;
+}
+
+export function Puzzle(ValidPage: Function, InvalidPage: Function, LoadingPage: Function, ErrorPage: Function, checkHash: string) {
+    const [valid, setValid] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<null | any>(null);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                setValid(await checkParams(checkHash));
+                setLoading(false);
+            } catch (e) {
+                setLoading(false);
+                setValid(false);
+                setError(e);
+            }
+        })();
+    });
+
+    if (error) {
+        console.error(error);
+        return ErrorPage(error);
+    }
+
+    if (loading) {
+        return LoadingPage();
+    }
+
+    if (!valid) {
+        return InvalidPage();
+    }
+
+    // valid
+    return ValidPage();
 }
