@@ -1,20 +1,25 @@
 "use client";
-import { useState, useEffect, type ReactNode } from "react";
-import { sha256Hex, keyedSha256Hex, mask } from "./lib/hash.ts";
-import { parseParams } from "./lib/query.ts";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
+import { sha256Hex, keyedSha256Hex, mask } from "./lib/hash";
+import { parseParams } from "./lib/query";
 
-let currentKey: number;
+let currentKey: number | undefined;
 
 function randInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
 function storeKey(val: number) {
+    if (typeof window === "undefined") return;
     window.localStorage.setItem("hashKey", String(val));
 }
 
-function getKey() {
-    return Number(window.localStorage.getItem("hashKey"));
+function getKey(): number | undefined {
+    if (typeof window === "undefined") return undefined;
+    const raw = window.localStorage.getItem("hashKey");
+    if (!raw) return undefined;
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 function genKey() {
@@ -23,27 +28,32 @@ function genKey() {
     return key;
 }
 
-export function sha256Keyed(data: string | Uint8Array): Promise<string> {
+function ensureKey(): number {
     if (currentKey === undefined) {
-        currentKey = getKey() || genKey();
+        currentKey = getKey() ?? genKey();
     }
-    return keyedSha256Hex(data, currentKey);
+    return currentKey;
 }
 
-export function keyedHashHash(data: string) {
-    if (currentKey === undefined) {
-        currentKey = getKey() || genKey();
-    }
-    return sha256Hex(mask(data, currentKey));
+export function sha256Keyed(data: string | Uint8Array): Promise<string> {
+    const key = ensureKey();
+    return keyedSha256Hex(data, key);
+}
+
+export async function keyedHashHash(data: string): Promise<string> {
+    const key = ensureKey();
+    return sha256Hex(mask(data, key));
 }
 
 export async function checkParams(doubleHash: string) {
-    if (currentKey === undefined) {
-        currentKey = getKey() || genKey();
-    }
-    const queryParams: string = window.location.href.includes("?") ? window.location.href.split("?")[1] : "";
-    const parsedParams: string | { [key: string]: any } = parseParams(queryParams);
-    const hashParam: string = (typeof parsedParams == "string") ? parsedParams : parsedParams["key"];
+    ensureKey();
+    const queryParams = window.location.href.includes("?") ? window.location.href.split("?")[1] : "";
+    const parsedParams = parseParams(queryParams);
+    const hashParam =
+        typeof parsedParams === "string"
+            ? parsedParams
+            : (parsedParams as Record<string, string>)["key"];
+    if (!hashParam) return false;
 
     return (await keyedHashHash(hashParam)) === doubleHash;
 }
@@ -56,36 +66,74 @@ function wrapPage(content: ReactNode) {
     );
 }
 
-export function Puzzle(ValidPage: Function, InvalidPage: Function, LoadingPage: Function, ErrorPage: Function, checkHash: string) {
+type PuzzleProps = {
+    ValidPage: ComponentType;
+    InvalidPage: ComponentType;
+    LoadingPage: ComponentType;
+    ErrorPage: ComponentType<{ error: Error }>;
+    checkHash: string;
+};
+
+export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHash }: PuzzleProps) {
     const [valid, setValid] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<null | any>(null);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
+        let cancelled = false;
         (async () => {
             try {
-                setValid(await checkParams(checkHash));
-                setLoading(false);
+                const isValid = await checkParams(checkHash);
+                if (!cancelled) {
+                    setValid(isValid);
+                    setLoading(false);
+                }
             } catch (e) {
-                setLoading(false);
-                setValid(false);
-                setError(e);
+                if (!cancelled) {
+                    setLoading(false);
+                    setValid(false);
+                    setError(e instanceof Error ? e : new Error("Unknown error"));
+                }
             }
         })();
-    });
+        return () => {
+            cancelled = true;
+        };
+    }, [checkHash]);
 
     let content: ReactNode;
 
     if (error) {
         console.error(error);
-        content = ErrorPage(error);
+        content = <ErrorPage error={error} />;
     } else if (loading) {
-        content = LoadingPage();
+        content = <LoadingPage />;
     } else if (!valid) {
-        content = InvalidPage();
+        content = <InvalidPage />;
     } else {
-        content = ValidPage();
+        content = <ValidPage />;
     }
 
     return wrapPage(content);
+}
+
+type PWBoxProps = {
+    placeholder?: string;
+    onChange?: (value: string) => void;
+};
+
+export function PWBox({ placeholder, onChange }: PWBoxProps) {
+    const [text, setText] = useState("");
+    return (
+        <input
+            type="password"
+            placeholder={placeholder}
+            value={text}
+            onChange={(event) => {
+                const value = event.target.value;
+                setText(value);
+                onChange?.(value);
+            }}
+        />
+    );
 }

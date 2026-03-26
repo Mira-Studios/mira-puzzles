@@ -1,14 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Puzzle } from "../puzzle.tsx";
+import { Puzzle, PWBox } from "../puzzle";
 
 const checkHash = '33652293d7d4e489befba58ed28ed1c59d7b133ccd71c48ff6332fdcc3d2da49'; // FatalMistake02
 
 function ValidPage() {
-    return <><h1>Yippie!</h1><span>You found the puzzle!</span></>;
+    return (
+        <div className="centered">
+            <h1>Yippie!</h1>
+            <span>You found the puzzle!</span>
+            <PWBox placeholder="If only you had a hint . . ." />
+        </div>
+    );
 }
 
-function ErrorPage(error: Error) {
+function ErrorPage({ error }: { error: Error }) {
     return <><h1>Error: {error.message}</h1><div>Don't worry! Our devs are on it!</div></>;
 }
 
@@ -21,5 +26,13 @@ function InvalidPage() {
 }
 
 export default function Puzzle1() {
-    return Puzzle(ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHash);
+    return (
+        <Puzzle
+            ValidPage={ValidPage}
+            InvalidPage={InvalidPage}
+            LoadingPage={LoadingPage}
+            ErrorPage={ErrorPage}
+            checkHash={checkHash}
+        />
+    );
 }

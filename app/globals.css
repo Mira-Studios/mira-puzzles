@@ -263,6 +263,23 @@ a {
   padding: 4rem 0 3rem;
 }
 
+.hero--centered {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
 .hero-stack {
   position: relative;
   min-height: 560px;

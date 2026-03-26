@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { sha256Keyed } from "../puzzle.tsx";
+import { sha256Keyed } from "../puzzle";
 
 export default function KeyedHashGenPage() {
   const [input, setInput] = useState("");
