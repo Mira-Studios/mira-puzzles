@@ -124,16 +124,18 @@ type PWBoxProps = {
 
 export function PWBox({ placeholder, onChange }: PWBoxProps) {
     const [text, setText] = useState("");
-    return (
+    return (<div className="inline-centered">
         <input
             type="password"
             placeholder={placeholder}
             value={text}
+            className="pw-input"
             onChange={(event) => {
                 const value = event.target.value;
                 setText(value);
                 onChange?.(value);
             }}
         />
-    );
+        <button className="continue-btn">Continue</button>
+    </div>);
 }

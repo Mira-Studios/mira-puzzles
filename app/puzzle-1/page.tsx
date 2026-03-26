@@ -6,9 +6,9 @@ const checkHash = '33652293d7d4e489befba58ed28ed1c59d7b133ccd71c48ff6332fdcc3d2d
 function ValidPage() {
     return (
         <div className="centered">
-            <h1>Yippie!</h1>
-            <span>You found the puzzle!</span>
-            <PWBox placeholder="If only you had a hint . . ." />
+            <h1>Enter the password!</h1>
+            <h1/>
+            <PWBox placeholder="Hmm . . . If only you had a hint . . ." />
         </div>
     );
 }

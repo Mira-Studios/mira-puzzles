@@ -74,6 +74,60 @@ img {
   height: auto;
 }
 
+.pw-input {
+  width: min(500px, 92vw);
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  height: 52px;
+  box-sizing: border-box;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--line) 80%, transparent);
+  background: var(--surface);
+  color: var(--text);
+  text-align: center;
+  transition: border-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+.pw-input::placeholder {
+  color: color-mix(in srgb, var(--muted) 75%, transparent);
+  text-align: center;
+}
+
+.pw-input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--primary) 70%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.continue-btn {
+  background-color: #FFFFFF; /* White background */
+  color: #333333;            /* Dark gray text for contrast */
+  border: 2px solid #CCCCCC; /* Light gray border */
+  padding: 14px 20px;          /* Space around the text */
+  text-align: center;          /* Center the text */
+  text-decoration: none;       /* Remove underlines for <a> tags */
+  display: inline-flex;        /* Allows padding/margin for <a> tags */
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;          /* Text size */
+  cursor: pointer;             /* Changes cursor to a hand on hover */
+  line-height: 1.2;
+  height: 52px;
+  box-sizing: border-box;
+  border-radius: 4px;          /* Rounded corners */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+}
+
+.continue-btn:hover {
+  background-color: #bbbbbb;
+}
+
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 12px;
@@ -274,6 +328,15 @@ a {
 .centered {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.inline-centered {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -529,7 +592,7 @@ h2 {
 
 .download-card.inapplicable:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 17px rgb(2 6 23 / 0.08); 
+  box-shadow: 0 8px 17px rgb(2 6 23 / 0.08);
   border-color: color-mix(in srgb, var(--line) 75%, var(--primary));
 
 }
