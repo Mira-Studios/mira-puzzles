@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { sha256Hex, keyedSha256Hex, mask } from "./lib/hash.ts";
 import { parseParams } from "./lib/query.ts";
 
@@ -48,6 +48,14 @@ export async function checkParams(doubleHash: string) {
     return (await keyedHashHash(hashParam)) === doubleHash;
 }
 
+function wrapPage(content: ReactNode) {
+    return (
+        <main className="page-enter">
+            <section className="hero">{content}</section>
+        </main>
+    );
+}
+
 export function Puzzle(ValidPage: Function, InvalidPage: Function, LoadingPage: Function, ErrorPage: Function, checkHash: string) {
     const [valid, setValid] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -66,19 +74,18 @@ export function Puzzle(ValidPage: Function, InvalidPage: Function, LoadingPage: 
         })();
     });
 
+    let content: ReactNode;
+
     if (error) {
         console.error(error);
-        return ErrorPage(error);
+        content = ErrorPage(error);
+    } else if (loading) {
+        content = LoadingPage();
+    } else if (!valid) {
+        content = InvalidPage();
+    } else {
+        content = ValidPage();
     }
 
-    if (loading) {
-        return LoadingPage();
-    }
-
-    if (!valid) {
-        return InvalidPage();
-    }
-
-    // valid
-    return ValidPage();
+    return wrapPage(content);
 }

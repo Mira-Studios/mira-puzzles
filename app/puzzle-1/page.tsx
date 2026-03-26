@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Puzzle } from "../puzzle.ts";
+import { Puzzle } from "../puzzle.tsx";
 
 const checkHash = '33652293d7d4e489befba58ed28ed1c59d7b133ccd71c48ff6332fdcc3d2da49'; // FatalMistake02
 
 function ValidPage() {
-    return <main className="page-enter"><section className="hero"><h1>Yippie!</h1><span>You found the puzzle!</span></section></main>;
+    return <><h1>Yippie!</h1><span>You found the puzzle!</span></>;
 }
 
 function ErrorPage(error: Error) {
