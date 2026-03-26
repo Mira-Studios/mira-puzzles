@@ -81,8 +81,10 @@ img {
   line-height: 1.2;
   height: 52px;
   box-sizing: border-box;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   border: 2px solid color-mix(in srgb, var(--line) 80%, transparent);
   background: var(--surface);
   color: var(--text);
@@ -121,6 +123,8 @@ img {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
   transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
 }
 
