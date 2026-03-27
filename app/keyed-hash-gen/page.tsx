@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { sha256Keyed } from "../puzzle";
+import { doubleHash } from "../lib/hash";
 
 export default function KeyedHashGenPage() {
   const [input, setInput] = useState("");
@@ -21,7 +21,7 @@ export default function KeyedHashGenPage() {
 
       try {
         setBusy(true);
-        const next = await sha256Keyed(input);
+        const next = await doubleHash(input);
         if (!cancelled) {
           setHash(next);
           setError(null);
