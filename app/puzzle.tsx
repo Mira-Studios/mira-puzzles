@@ -71,45 +71,50 @@ type PuzzleProps = {
     InvalidPage: ComponentType;
     LoadingPage: ComponentType;
     ErrorPage: ComponentType<{ error: Error }>;
-    checkHash: string;
+    checkHash?: string;
 };
 
 export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHash }: PuzzleProps) {
-    const [valid, setValid] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        (async () => {
-            try {
-                const isValid = await checkParams(checkHash);
-                if (!cancelled) {
-                    setValid(isValid);
-                    setLoading(false);
-                }
-            } catch (e) {
-                if (!cancelled) {
-                    setLoading(false);
-                    setValid(false);
-                    setError(e instanceof Error ? e : new Error("Unknown error"));
-                }
-            }
-        })();
-        return () => {
-            cancelled = true;
-        };
-    }, [checkHash]);
-
     let content: ReactNode;
 
-    if (error) {
-        console.error(error);
-        content = <ErrorPage error={error} />;
-    } else if (loading) {
-        content = <LoadingPage />;
-    } else if (!valid) {
-        content = <InvalidPage />;
+    if (checkHash) {
+        const [valid, setValid] = useState(false);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState<Error | null>(null);
+
+        useEffect(() => {
+            let cancelled = false;
+            (async () => {
+                try {
+                    const isValid = await checkParams(checkHash);
+                    if (!cancelled) {
+                        setValid(isValid);
+                        setLoading(false);
+                    }
+                } catch (e) {
+                    if (!cancelled) {
+                        setLoading(false);
+                        setValid(false);
+                        setError(e instanceof Error ? e : new Error("Unknown error"));
+                    }
+                }
+            })();
+            return () => {
+                cancelled = true;
+            };
+        }, [checkHash]);
+
+
+        if (error) {
+            console.error(error);
+            content = <ErrorPage error={error} />;
+        } else if (loading) {
+            content = <LoadingPage />;
+        } else if (!valid) {
+            content = <InvalidPage />;
+        } else {
+            content = <ValidPage />;
+        }
     } else {
         content = <ValidPage />;
     }

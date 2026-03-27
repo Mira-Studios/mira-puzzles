@@ -39,7 +39,6 @@ export default function Puzzle1() {
             InvalidPage={InvalidPage}
             LoadingPage={LoadingPage}
             ErrorPage={ErrorPage}
-            checkHash={checkHash}
         />
     );
 }
