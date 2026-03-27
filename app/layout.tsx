@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { UserMenu } from "@/components/auth/user-menu";
+import { SignIn } from "@/components/auth/sign-in";
+import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,6 +18,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const year = new Date().getFullYear();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -48,6 +55,7 @@ export default async function RootLayout({
                   <Link href="/">Home</Link>
                 </nav>
                 <ThemeToggle />
+                {user ? <UserMenu initialUser={user} /> : <SignIn />}
               </div>
             </div>
           </header>
