@@ -120,9 +120,10 @@ export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHa
 type PWBoxProps = {
     placeholder?: string;
     onChange?: (value: string) => void;
+    onSubmit?: (value: string) => void;
 };
 
-export function PWBox({ placeholder, onChange }: PWBoxProps) {
+export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
     const [text, setText] = useState("");
     return (<div className="inline-centered">
         <input
@@ -136,6 +137,6 @@ export function PWBox({ placeholder, onChange }: PWBoxProps) {
                 onChange?.(value);
             }}
         />
-        <button className="continue-btn">Continue</button>
+        <button className="continue-btn" onClick={() => onSubmit(text)}>Continue</button>
     </div>);
 }

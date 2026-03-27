@@ -1,21 +1,14 @@
 "use client";
-import { Puzzle, PWBox, sha256Keyed } from "../puzzle";
+import { Puzzle, PWBox } from "../puzzle";
 
 const checkHash = '33652293d7d4e489befba58ed28ed1c59d7b133ccd71c48ff6332fdcc3d2da49'; // FatalMistake02
-
-async function handleSubmit(pw: string) {
-    const currentURL =  new URL(window.location.href);
-    const base = new URL(window.location.href).origin;
-    const hash = await sha256Keyed(pw);
-    window.location.href = `${base}/puzzle-2?key=${hash}`;
-}
 
 function ValidPage() {
     return (
         <div className="centered">
             <h1>Enter the password!</h1>
             <h1/>
-            <PWBox placeholder="Hmm . . . If only you had a hint . . ." onSubmit={handleSubmit} />
+            <PWBox placeholder="Hmm . . . If only you had a hint . . ." />
         </div>
     );
 }
@@ -32,7 +25,7 @@ function InvalidPage() {
     return <><h1>Nice try! Invalid key.</h1></>
 }
 
-export default function Puzzle1() {
+export default function Puzzle2() {
     return (
         <Puzzle
             ValidPage={ValidPage}
