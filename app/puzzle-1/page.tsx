@@ -3,9 +3,9 @@ import { Puzzle, PWBox, sha256Keyed } from "../puzzle";
 
 async function handleSubmit(pw: string) {
     const currentURL =  new URL(window.location.href);
-    const base = new URL(window.location.href).origin;
+    const base = currentURL.origin;
     const hash = await sha256Keyed(pw);
-    window.location.href = `${base}/puzzle-2?key=${hash}`;
+    window.location.href = `${base}/puzzle-2#key=${encodeURIComponent(hash)}`;
 }
 
 function ValidPage() {

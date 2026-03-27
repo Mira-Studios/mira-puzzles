@@ -48,10 +48,10 @@ export default function KeyedHashGenPage() {
   return (
     <main style={{ padding: "48px 20px", maxWidth: "760px", margin: "0 auto", color: "#111" }}>
       <h1 style={{ fontSize: "32px", marginBottom: "8px", color: "#0b0b0b" }}>
-        Keyed SHA-256 Generator
+        Double SHA-256 Generator
       </h1>
       <p style={{ color: "#1f2937", marginBottom: "24px" }}>
-        Enter any text below to generate a keyed SHA-256 hash using your current key.
+        Enter any text below to generate a double SHA-256 hash of what you type in.
       </p>
 
       <label htmlFor="keyed-hash-input" style={{ display: "block", fontWeight: 600, marginBottom: "8px" }}>
@@ -62,7 +62,7 @@ export default function KeyedHashGenPage() {
         value={input}
         onChange={(event) => setInput(event.target.value)}
         rows={5}
-        placeholder="Type or paste text to hash"
+        placeholder="Type or paste text to double hash"
         style={{
           width: "100%",
           padding: "12px",
