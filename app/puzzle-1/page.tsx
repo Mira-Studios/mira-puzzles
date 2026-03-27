@@ -1,8 +1,6 @@
 "use client";
 import { Puzzle, PWBox, sha256Keyed } from "../puzzle";
 
-const checkHash = '33652293d7d4e489befba58ed28ed1c59d7b133ccd71c48ff6332fdcc3d2da49'; // FatalMistake02
-
 async function handleSubmit(pw: string) {
     const currentURL =  new URL(window.location.href);
     const base = new URL(window.location.href).origin;
