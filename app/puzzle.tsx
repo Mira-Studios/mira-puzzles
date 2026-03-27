@@ -15,7 +15,7 @@ function storeKey(val: number) {
 }
 
 function getKey(): number | undefined {
-    if (typeof window === "undefined") return undefined;
+    if (typeof window === "undefined") return 0;
     const raw = window.localStorage.getItem("hashKey");
     if (!raw) return undefined;
     const parsed = Number(raw);
@@ -29,10 +29,24 @@ function genKey() {
 }
 
 function ensureKey(): number {
+    if (typeof window === "undefined") return 0;
     if (currentKey === undefined) {
         currentKey = getKey() ?? genKey();
     }
     return currentKey;
+}
+
+function storeHash(hash: string) {
+    if (typeof window === "undefined") return;
+    const currentUrl = new URL(window.location.href);
+    // store based on the url path
+    window.sessionStorage.setItem(`Hash:${currentUrl.pathname}`, hash);
+}
+
+function getHash(): string {
+    if (typeof window === "undefined") return "";
+    const currentUrl = new URL(window.location.href);
+    return window.sessionStorage.getItem(`Hash:${currentUrl.pathname}`) ?? "";
 }
 
 export function sha256Keyed(data: string | Uint8Array): Promise<string> {
@@ -45,15 +59,28 @@ export async function keyedHashHash(data: string): Promise<string> {
     return sha256Hex(mask(data, key));
 }
 
+function getParams(): string {
+    // check url hash params, if they aren't there, use sessionStorage
+    if (typeof window === "undefined") return "";
+    return (window.location.href.includes("#") ? window.location.href.split("#")[1] : "") || getHash();
+}
+
 export async function checkParams(doubleHash: string) {
+    if (typeof window === "undefined") return false;
     ensureKey();
-    const queryParams = window.location.href.includes("?") ? window.location.href.split("?")[1] : "";
-    const parsedParams = parseParams(queryParams);
+    const hashParams = getParams();
+    storeHash(hashParams);
+    const parsedParams = parseParams(hashParams);
     const hashParam =
         typeof parsedParams === "string"
             ? parsedParams
             : (parsedParams as Record<string, string>)["key"];
     if (!hashParam) return false;
+
+
+    // Get rid of the hash params on the url
+    let cleanUrl = window.location.href.split('#')[0];
+    window.history.replaceState({}, document.title, cleanUrl);
 
     return (await keyedHashHash(hashParam)) === doubleHash;
 }
@@ -142,6 +169,6 @@ export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
                 onChange?.(value);
             }}
         />
-        <button className="continue-btn" onClick={() => onSubmit(text)}>Continue</button>
+        <button className="continue-btn" onClick={() => {if (onSubmit) onSubmit(text);} }>Continue</button>
     </div>);
 }
