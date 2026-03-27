@@ -142,6 +142,6 @@ export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
                 onChange?.(value);
             }}
         />
-        <button className="continue-btn" onClick={() => onSubmit(text)}>Continue</button>
+        <button className="continue-btn" onClick={() => onSubmit?.(text)}>Continue</button>
     </div>);
 }
