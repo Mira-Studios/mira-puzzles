@@ -88,7 +88,7 @@ export async function checkParams(doubleHash: string) {
 function wrapPage(content: ReactNode) {
     return (
         <main className="page-enter">
-            <section className="hero">{content}</section>
+            <section className="hero animate-fade-up">{content}</section>
         </main>
     );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Solitreo } from "next/font/google";
+import { redirect } from "next/navigation";
 import "./globals.css";
 
 const solitreo = Solitreo({
@@ -7,7 +8,15 @@ const solitreo = Solitreo({
   weight: "400",
 });
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { dev?: string } | Promise<{ dev?: string }>;
+}) {
+  const params = await Promise.resolve(searchParams);
+  if (!params?.dev) {
+    redirect("/?dev=false");
+  }
   return (
     <main className="page-enter">
       <section className="hero">
