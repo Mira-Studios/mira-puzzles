@@ -12,8 +12,7 @@ function ValidPage() {
     return (
         <div className="centered">
             <h1>Enter the password</h1>
-            <h2>Please enter the password to continue to the Developer Site.</h2>
-            <PWBox placeholder="Enter the Password . . ." onSubmit={handleSubmit} />
+            <PWBox placeholder="If only you had a hint . . ." onSubmit={handleSubmit} />
         </div>
     );
 }
