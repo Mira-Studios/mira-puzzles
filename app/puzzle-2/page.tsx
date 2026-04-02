@@ -1,7 +1,7 @@
 "use client";
 import { Puzzle, PWBox } from "../puzzle";
 
-const checkHash = 'd7914fe546b684688bb95f4f888a92dfc680603a75f23eb823658031fff766d9'; // FatalMistake02
+const checkHash = '4b88c5155f1c388aaa3cbd1cec87590eb6f039e5d54a28720bfa430d2d349f7e';
 
 function ValidPage() {
     return (

@@ -8,12 +8,25 @@ async function handleSubmit(pw: string) {
     window.location.href = `${base}/puzzle-2#key=${encodeURIComponent(hash)}`;
 }
 
+function Acrostic() {
+    return (<>
+        <span><span className="special-highlight">I</span>n order to access this section, you don't have to be bright</span>
+        <span><span className="special-highlight">N</span>ever forget that the answer's in plain sight.</span>
+        <span><span className="special-highlight">T</span>esting your knowledge isn't so hard</span>
+        <span><span className="special-highlight">E</span>xplore all your clues, and your path won't be barred</span>
+        <span><span className="special-highlight">R</span>ealize -- the answer's right in front of you.</span>
+        <span><span className="special-highlight">N</span>othing tricky here—just a straightforward clue</span>
+        <span><span className="special-highlight">A</span>ll you need is to type it exactly (all lowercase).</span>
+        <span><span className="special-highlight">L</span>ook carefully, it's in front of your face</span>
+    </>)
+}
+
 function ValidPage() {
     return (
         <div className="centered">
             <h1>Enter the password</h1>
             <PWBox placeholder="If only you had a hint . . ." onSubmit={handleSubmit} />
-            <Hint>Hello</Hint>
+            <Hint><Acrostic/></Hint>
         </div>
     );
 }
