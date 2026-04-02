@@ -164,9 +164,14 @@ export function Hint({ children }: HintProps) {
                 onClick={() => setOpen(!open)}
             >
                 <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-                    <path
-                        d="M12 3a7 7 0 0 0-4 12.7V18a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 3zm2 15h-4v-1h4v1zm0-3h-4v-1.2l-.4-.3a5 5 0 1 1 8.8 0l-.4.3V15z"
-                    />
+                    <path d="M9 18h6" />
+                    <path d="M10 22h4" />
+                    <path d="M8 13a4 4 0 1 1 8 0c0 1.4-.7 2.7-1.8 3.4L13.5 17h-3l-.7-.6A4.2 4.2 0 0 1 8 13z" />
+                    <path d="M12 2v2" />
+                    <path d="M4.9 4.9l1.4 1.4" />
+                    <path d="M19.1 4.9l-1.4 1.4" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
                 </svg>
             </button>
             {open ? children : <></>}
