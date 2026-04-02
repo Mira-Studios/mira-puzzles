@@ -157,8 +157,17 @@ export function Hint({ children }: HintProps) {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <button type="button" className="hint-btn" onClick={() => setOpen(!open)}>
-                Open Hint (Placeholder)
+            <button
+                type="button"
+                className="hint-btn"
+                aria-label={open ? "Close hint" : "Open hint"}
+                onClick={() => setOpen(!open)}
+            >
+                <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                    <path
+                        d="M12 3a7 7 0 0 0-4 12.7V18a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 3zm2 15h-4v-1h4v1zm0-3h-4v-1.2l-.4-.3a5 5 0 1 1 8.8 0l-.4.3V15z"
+                    />
+                </svg>
             </button>
             {open ? children : <></>}
         </>
