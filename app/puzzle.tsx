@@ -165,8 +165,9 @@ export function Hint({ children }: HintProps) {
             >
                 <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
                     <path d="M9 18h6" />
+                    <path d="M9.5 20h5" />
                     <path d="M10 22h4" />
-                    <path d="M8 13a4 4 0 1 1 8 0c0 1.4-.7 2.7-1.8 3.4L13.5 17h-3l-.7-.6A4.2 4.2 0 0 1 8 13z" />
+                    <path d="M7.5 12.5a4.5 5.2 0 1 1 9 0c0 1.8-.8 3.4-2.2 4.3L13.2 17h-2.4l-1.1-.2A5.1 5.1 0 0 1 7.5 12.5z" />
                     <path d="M12 2v2" />
                     <path d="M4.9 4.9l1.4 1.4" />
                     <path d="M19.1 4.9l-1.4 1.4" />
