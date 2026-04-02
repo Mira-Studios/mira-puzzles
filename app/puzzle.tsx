@@ -149,6 +149,22 @@ export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHa
     return wrapPage(content);
 }
 
+type HintProps = {
+    children: ReactNode
+}
+
+export function Hint({ children }: HintProps) {
+    const [open, setOpen] = useState(false);
+    return (
+        <>
+            <button type="button" className="hint-btn" onClick={() => setOpen(!open)}>
+                Open Hint (Placeholder)
+            </button>
+            {open ? children : <></>}
+        </>
+    );
+}
+
 type PWBoxProps = {
     placeholder?: string;
     onChange?: (value: string) => void;

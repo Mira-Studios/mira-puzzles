@@ -74,6 +74,26 @@ img {
   height: auto;
 }
 
+button.hint-btn {
+  appearance: none;
+  background: #ffffff;
+  border: 2px solid var(--text);
+  color: #000000;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgb(2 6 23 / 0.16);
+  font-weight: 600;
+}
+
 .pw-input {
   width: min(500px, 92vw);
   padding: 14px 18px;
@@ -1376,4 +1396,3 @@ code {
 .muted-note {
   color: var(--muted);
 }
-

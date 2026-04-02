@@ -1,5 +1,5 @@
 "use client";
-import { Puzzle, PWBox, sha256Keyed } from "../puzzle";
+import { Puzzle, Hint, PWBox, sha256Keyed } from "../puzzle";
 
 async function handleSubmit(pw: string) {
     const currentURL =  new URL(window.location.href);
@@ -13,6 +13,7 @@ function ValidPage() {
         <div className="centered">
             <h1>Enter the password</h1>
             <PWBox placeholder="If only you had a hint . . ." onSubmit={handleSubmit} />
+            <Hint>Hello</Hint>
         </div>
     );
 }
