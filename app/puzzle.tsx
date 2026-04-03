@@ -190,10 +190,10 @@ export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHa
                 content = <InvalidPage />;
             }
         } else {
-            content = <ValidPage showIncorrectMessage={currentParams.badnextpw === "true"}/>;
+            content = <ValidPage showIncorrectMessage={currentParams?.badnextpw === "true"}/>;
         }
     } else {
-        content = <ValidPage showIncorrectMessage={currentParams.badnextpw === "true"}/>;
+        content = <ValidPage showIncorrectMessage={currentParams?.badnextpw === "true"}/>;
     }
 
     return wrapPage(content);
