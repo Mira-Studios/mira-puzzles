@@ -42,6 +42,7 @@ function ValidPage({ showIncorrectMessage }: ValidPageProps) {
     return (
         <div className="centered">
             {showIncorrectMessage ? <IncorrectMessage /> : <></>}
+            <span>Congratulations! You've reached the 2nd puzzle! Now . . .</span>
             <h1>Enter the password</h1>
             <PWBox placeholder="If only you had a hint . . ." onSubmit={handleSubmit} />
             <Hint><Acrostic/></Hint>
