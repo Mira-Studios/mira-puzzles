@@ -188,6 +188,7 @@ type PWBoxProps = {
 
 export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
     const [text, setText] = useState("");
+    const conditionalOnSubmit = () => {if (onSubmit) onSubmit?.(text);}
     return (<div className="inline-centered">
         <input
             type="password"
@@ -199,7 +200,10 @@ export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
                 setText(value);
                 onChange?.(value);
             }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') conditionalOnSubmit();
+            }}
         />
-        <button className="continue-btn" onClick={() => {if (onSubmit) onSubmit?.(text);} }>Continue</button>
+        <button className="continue-btn" onClick={conditionalOnSubmit}>Continue</button>
     </div>);
 }
