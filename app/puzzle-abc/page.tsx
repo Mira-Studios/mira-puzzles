@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Puzzle, Hint, PWBox, sha256Keyed, ValidPageProps } from "../puzzle";
 
 async function handleSubmit(pw: string) {
@@ -22,9 +23,15 @@ function Acrostic() {
 }
 
 function IncorrectMessage() {
-    return (
-        <><span>Nice try, but that's the wrong password!</span></>
-    );
+    const [showing, setShowing] = useState(true);
+    useEffect(() => {
+        setTimeout(() => {
+            setShowing(false);
+        }, 1000);
+    });
+    return (<>
+        {showing ? <span className="nice-try">Nice try, but that's the wrong password!</span> : <></>}
+    </>);
 }
 
 function ValidPage({ showIncorrectMessage }: ValidPageProps) {

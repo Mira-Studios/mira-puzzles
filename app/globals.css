@@ -109,6 +109,10 @@ button.hint-btn svg {
   text-decoration: underline;   /* optional emphasis */
 }
 
+.nice-try {
+  color: #ff0000
+}
+
 .pw-input {
   width: min(500px, 92vw);
   padding: 14px 18px;
