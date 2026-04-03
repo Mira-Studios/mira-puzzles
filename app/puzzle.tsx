@@ -7,6 +7,7 @@ import { ObjectEncodingOptions } from "node:fs";
 let currentKey: number | undefined;
 
 let parsedParams: { [key: string]: string };
+let currentParams: { [key: string]: string };
 
 function getHashParams() {
     const hashParams = getParams();
@@ -15,6 +16,33 @@ function getHashParams() {
 }
 
 getHashParams();
+
+function getCurrentHashParams() {
+    if (typeof window === 'undefined') return ""
+    const hashParams = (window.location.href.includes("#") ? window.location.href.split("#")[1] : "")
+    currentParams = parseParams(hashParams);
+}
+
+getCurrentHashParams();
+
+export function deleteHashParam(key: string) {
+    if (typeof window === 'undefined') return;
+    // 1. Get the current hash (stripping the leading '#')
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+
+    // 2. Remove the specific key
+    hashParams.delete(key);
+
+    // 3. Construct the new URL
+    // If the list is empty, 'newHash' will be an empty string
+    const newHash = hashParams.toString();
+    const finalUrl = newHash ? `#${newHash}` : window.location.pathname + window.location.search;
+
+    // 4. Update the address bar without a page refresh
+    window.history.replaceState(null, '', finalUrl);
+
+    delete currentParams[key];
+}
 
 function randInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -150,20 +178,22 @@ export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHa
         } else if (loading) {
             content = <LoadingPage />;
         } else if (!valid) {
-            if (typeof window !== 'undefined' && parsedParams["returnto"]) {
-                const returnUrl = new URL(decodeURIComponent(parsedParams["returnto"]));
-                const hashParams = new URLSearchParams(returnUrl.hash);
+            if (typeof window !== 'undefined' && currentParams["returnto"]) {
+                console.log(currentParams["returnto"]);
+                const returnUrl = new URL(decodeURIComponent(currentParams["returnto"]));
+                const hashParams = new URLSearchParams(returnUrl.hash.substring(1));
                 hashParams.set("badnextpw", "true");
                 returnUrl.hash = hashParams.toString();
+                console.warn("jimbob", returnUrl.hash);
                 window.location.href = returnUrl.toString();
             } else {
                 content = <InvalidPage />;
             }
         } else {
-            content = <ValidPage showIncorrectMessage={Boolean(parsedParams.badnextpw)}/>;
+            content = <ValidPage showIncorrectMessage={currentParams.badnextpw === "true"}/>;
         }
     } else {
-        content = <ValidPage showIncorrectMessage={Boolean(parsedParams.badnextpw)}/>;
+        content = <ValidPage showIncorrectMessage={currentParams.badnextpw === "true"}/>;
     }
 
     return wrapPage(content);

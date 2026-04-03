@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Puzzle, Hint, PWBox, sha256Keyed, ValidPageProps } from "../puzzle";
+import { Puzzle, Hint, PWBox, sha256Keyed, deleteHashParam, ValidPageProps } from "../puzzle";
 
 async function handleSubmit(pw: string) {
     const currentURL =  new URL(window.location.href);
@@ -27,6 +27,7 @@ function IncorrectMessage() {
     useEffect(() => {
         setTimeout(() => {
             setShowing(false);
+            deleteHashParam("badnextpw");
         }, 1000);
     });
     return (<>
