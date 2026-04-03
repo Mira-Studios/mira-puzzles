@@ -13,10 +13,6 @@ export default async function Home({
 }: {
   searchParams?: { dev?: string } | Promise<{ dev?: string }>;
 }) {
-  const params = await Promise.resolve(searchParams);
-  if (!params?.dev) {
-    redirect("/?dev=false");
-  }
   return (
     <main className="page-enter">
       <section className="hero">
