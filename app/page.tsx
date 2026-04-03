@@ -29,7 +29,7 @@ export default async function Home({
                 Test your wit with mind-bending puzzles
               </p>
               <div className="cta-row animate-fade-up" style={{ animationDelay: "280ms" }}>
-                <Link href="/puzzle-abc" className="btn btn-primary">
+                <Link href="/puzzle-1" className="btn btn-primary">
                   Begin
                 </Link>
               </div>
