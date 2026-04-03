@@ -1,11 +1,11 @@
 "use client";
-import { Puzzle, Hint, PWBox, sha256Keyed } from "../puzzle";
+import { Puzzle, Hint, PWBox, sha256Keyed, ValidPageProps } from "../puzzle";
 
 async function handleSubmit(pw: string) {
     const currentURL =  new URL(window.location.href);
     const base = currentURL.origin;
     const hash = await sha256Keyed(pw);
-    window.location.href = `${base}/puzzle-2#key=${encodeURIComponent(hash)}`;
+    window.location.href = `${base}/puzzle-2#key=${encodeURIComponent(hash)}&returnto=${encodeURIComponent(window.location.href)}`;
 }
 
 function Acrostic() {
@@ -21,9 +21,17 @@ function Acrostic() {
     </>)
 }
 
-function ValidPage() {
+function IncorrectMessage() {
+    return (
+        <><span>Nice try, but that's the wrong password!</span></>
+    );
+}
+
+function ValidPage({ showIncorrectMessage }: ValidPageProps) {
+    console.log("Invalid pw :", showIncorrectMessage);
     return (
         <div className="centered">
+            {showIncorrectMessage ? <IncorrectMessage /> : <></>}
             <h1>Enter the password</h1>
             <PWBox placeholder="If only you had a hint . . ." onSubmit={handleSubmit} />
             <Hint><Acrostic/></Hint>

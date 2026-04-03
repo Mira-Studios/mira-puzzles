@@ -1,7 +1,7 @@
-export function parseParams(params: string): string | object {
-    if (!params.includes("=")) {
-        return params;
-    }
+export function parseParams(params: string): { [key: string]: string } {
+    // if (!params.includes("=")) {
+    //     return params;
+    // }
 
     const search = params.startsWith("#") ? params.slice(1) : params;
     const ret: { [key: string]: any } = {};

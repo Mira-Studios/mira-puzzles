@@ -2,8 +2,19 @@
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { sha256Hex, keyedSha256Hex, mask } from "./lib/hash";
 import { parseParams } from "./lib/query";
+import { ObjectEncodingOptions } from "node:fs";
 
 let currentKey: number | undefined;
+
+let parsedParams: { [key: string]: string };
+
+function getHashParams() {
+    const hashParams = getParams();
+    storeHash(hashParams);
+    parsedParams = parseParams(hashParams);
+}
+
+getHashParams();
 
 function randInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -68,9 +79,6 @@ function getParams(): string {
 export async function checkParams(doubleHash: string) {
     if (typeof window === "undefined") return false;
     ensureKey();
-    const hashParams = getParams();
-    storeHash(hashParams);
-    const parsedParams = parseParams(hashParams);
     const hashParam =
         typeof parsedParams === "string"
             ? parsedParams
@@ -93,8 +101,12 @@ function wrapPage(content: ReactNode) {
     );
 }
 
+export type ValidPageProps = {
+    showIncorrectMessage?: boolean;
+}
+
 type PuzzleProps = {
-    ValidPage: ComponentType;
+    ValidPage: ComponentType<ValidPageProps>;
     InvalidPage: ComponentType;
     LoadingPage: ComponentType;
     ErrorPage: ComponentType<{ error: Error }>;
@@ -138,12 +150,20 @@ export function Puzzle({ ValidPage, InvalidPage, LoadingPage, ErrorPage, checkHa
         } else if (loading) {
             content = <LoadingPage />;
         } else if (!valid) {
-            content = <InvalidPage />;
+            if (typeof window !== 'undefined' && parsedParams["returnto"]) {
+                const returnUrl = new URL(decodeURIComponent(parsedParams["returnto"]));
+                const hashParams = new URLSearchParams(returnUrl.hash);
+                hashParams.set("badnextpw", "true");
+                returnUrl.hash = hashParams.toString();
+                window.location.href = returnUrl.toString();
+            } else {
+                content = <InvalidPage />;
+            }
         } else {
-            content = <ValidPage />;
+            content = <ValidPage showIncorrectMessage={Boolean(parsedParams.badnextpw)}/>;
         }
     } else {
-        content = <ValidPage />;
+        content = <ValidPage showIncorrectMessage={Boolean(parsedParams.badnextpw)}/>;
     }
 
     return wrapPage(content);
