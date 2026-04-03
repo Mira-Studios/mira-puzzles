@@ -2,11 +2,6 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
-  const url = request.nextUrl;
-  const devParam = url.searchParams.get("dev");
-  if (url.pathname === "/" && devParam === "true") {
-    return NextResponse.rewrite(new URL("/dev-login", request.url));
-  }
 
   let response = NextResponse.next({
     request: {
