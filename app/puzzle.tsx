@@ -241,7 +241,7 @@ export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
     const conditionalOnSubmit = () => {if (onSubmit) onSubmit?.(text);}
     return (<div className="inline-centered">
         <input
-            type="password"
+            type="text"
             style={{"-webkit-text-security": "disc", "text-security": "disc"} as React.CSSProperties}
             placeholder={placeholder}
             value={text}
