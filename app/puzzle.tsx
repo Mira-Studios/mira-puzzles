@@ -242,6 +242,7 @@ export function PWBox({ placeholder, onChange, onSubmit }: PWBoxProps) {
     return (<div className="inline-centered">
         <input
             type="password"
+            style={{"-webkit-text-security": "disc", "text-security": "disc"} as React.CSSProperties}
             placeholder={placeholder}
             value={text}
             className="pw-input"
