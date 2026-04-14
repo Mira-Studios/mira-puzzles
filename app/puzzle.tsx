@@ -11,7 +11,7 @@ let currentParams: { [key: string]: string };
 
 function getHashParams() {
     const hashParams = getParams();
-    storeHash(hashParams);
+    storeHash(new URLSearchParams(hashParams).get("key"));
     parsedParams = parseParams(hashParams);
 }
 
@@ -75,8 +75,8 @@ function ensureKey(): number {
     return currentKey;
 }
 
-function storeHash(hash: string) {
-    if (typeof window === "undefined") return;
+function storeHash(hash: string | null) {
+    if (typeof window === "undefined" || hash === null) return;
     const currentUrl = new URL(window.location.href);
     // store based on the url path
     window.sessionStorage.setItem(`Hash:${currentUrl.pathname}`, hash);
@@ -101,7 +101,9 @@ export async function keyedHashHash(data: string): Promise<string> {
 function getParams(): string {
     // check url hash params, if they aren't there, use sessionStorage
     if (typeof window === "undefined") return "";
-    return (window.location.href.includes("#") ? window.location.href.split("#")[1] : "") || getHash();
+    let ret: { [key: string]: string } = (window.location.href.includes("#") ? Object.fromEntries(new URLSearchParams(window.location.href.split("#")[1])) : {});
+    ret["key"] = ret["key"] || getHash();
+    return typeof ret === "string" ? ret : new URLSearchParams(ret).toString();
 }
 
 export async function checkParams(doubleHash: string) {
