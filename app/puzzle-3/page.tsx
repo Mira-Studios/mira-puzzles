@@ -1,13 +1,13 @@
 "use client";
 import { Puzzle, PWBox, Hint, sha256Keyed } from "../puzzle";
 
-const checkHash = '4b88c5155f1c388aaa3cbd1cec87590eb6f039e5d54a28720bfa430d2d349f7e';
+const checkHash = 'a365dc409e66c383ba3a11fca85770664145fd9270c993de6eb44f20c2366762';
 
 async function handleSubmit(pw: string) {
     const currentURL =  new URL(window.location.href);
     const base = currentURL.origin;
     const hash = await sha256Keyed(pw);
-    window.location.href = `${base}/puzzle-3#key=${encodeURIComponent(hash)}&returnto=${encodeURIComponent(window.location.href)}`;
+    window.location.href = `${base}/puzzle-4#key=${encodeURIComponent(hash)}&returnto=${encodeURIComponent(window.location.href)}`;
 }
 
 function Clue() {
@@ -20,7 +20,7 @@ function Clue() {
 function ValidPage() {
     return (
         <div className="centered">
-            <span>Congratulations! You've reached the 3rd puzzle.</span>
+            <span>Congratulations! You've reached the 4th puzzle.</span>
             <h1>Enter the password!</h1>
             <h1/>
             <PWBox placeholder="Hmm . . . If only you had a hint . . ." onSubmit={handleSubmit} />
